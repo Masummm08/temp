@@ -6,18 +6,21 @@
 <style>
 /* Layout: one quad-ruled notebook page (light) / blackboard (dark); sections are ledger entries down a single column, with a margin rail for section labels. */
 :root{
-  --paper:#fde6ee;      /* baby-pink page */
-  --dot:#f7c9d9;        /* halftone dots */
-  --grid:#f7c9d9;
-  --ink:#3d1a3a;        /* deep plum ink */
-  --ink-2:#7a4a6e;
-  --rule:#eeb3c8;
-  --hi:#ffe066;         /* butter yellow */
-  --hi-ink:#3d1a3a;
-  --margin:#ff6f9c;     /* hot pink, for marks */
-  --card:#fff8fb;
-  --muted-cell:#f6c3d4;
-  --pink:#ffb3cb;       /* baby pink, saturated */
+  --paper:#fff4f6;      /* blush ground */
+  --dot:#f6d9e3;
+  --grid:#f6d9e3;
+  --glow1:#ffd9e6;      /* background wash, pink */
+  --glow2:#e6defe;      /* background wash, lavender */
+  --ink:#27214a;        /* deep indigo ink */
+  --ink-2:#5f5884;
+  --rule:#e3d3ea;
+  --hi:#ffd447;         /* sunflower */
+  --hi-ink:#27214a;
+  --margin:#ef4f86;     /* raspberry */
+  --card:#ffffff;
+  --muted-cell:#ece6fb;
+  --pink:#ffc2d6;       /* petal pink */
+  --lav:#b9a7ff;        /* lavender */
 
   --f-hero:"Bagel Fat One","Arial Black",Impact,sans-serif;
   --f-display:"Archivo","Arial Narrow",Arial,sans-serif;
@@ -27,22 +30,28 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#2b1429; --dot:#3a1d37; --grid:#3a1d37; --ink:#ffe3ee; --ink-2:#e0a9c4; --rule:#5c2f55;
-    --hi:#ffe066; --hi-ink:#2b1429; --margin:#ff86ad; --card:#37193a; --muted-cell:#5a2c53; --pink:#ff9cbe;
+    --paper:#1c1838; --dot:#27224a; --grid:#27224a; --glow1:#3a1f45; --glow2:#24245a;
+    --ink:#f6f0ff; --ink-2:#bdb3e0; --rule:#3c3566; --hi:#ffd447; --hi-ink:#1c1838;
+    --margin:#ff7aa8; --card:#262049; --muted-cell:#332c5c; --pink:#ff9fc0; --lav:#9d88ff;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#2b1429; --dot:#3a1d37; --grid:#3a1d37; --ink:#ffe3ee; --ink-2:#e0a9c4; --rule:#5c2f55;
-  --hi:#ffe066; --hi-ink:#2b1429; --margin:#ff86ad; --card:#37193a; --muted-cell:#5a2c53; --pink:#ff9cbe;
+  --paper:#1c1838; --dot:#27224a; --grid:#27224a; --glow1:#3a1f45; --glow2:#24245a;
+  --ink:#f6f0ff; --ink-2:#bdb3e0; --rule:#3c3566; --hi:#ffd447; --hi-ink:#1c1838;
+  --margin:#ff7aa8; --card:#262049; --muted-cell:#332c5c; --pink:#ff9fc0; --lav:#9d88ff;
   color-scheme:dark;
 }
 
 *{box-sizing:border-box}
 body{
   background-color:var(--paper);
-  background-image:radial-gradient(var(--dot) 1.6px,transparent 1.8px);
-  background-size:18px 18px;
+  background-image:
+    radial-gradient(var(--dot) 1.4px,transparent 1.6px),
+    radial-gradient(60rem 40rem at 0% 0%,var(--glow1),transparent 70%),
+    radial-gradient(50rem 40rem at 100% 30%,var(--glow2),transparent 70%),
+    radial-gradient(50rem 40rem at 0% 80%,var(--glow2),transparent 70%);
+  background-size:20px 20px,auto,auto,auto;
   overflow-x:hidden;
   color:var(--ink);
   font-family:var(--f-body);
@@ -321,6 +330,39 @@ ul.crosses li::before{content:"✕";font-weight:700;color:var(--ink);background:
   .ticker .track{font-size:1.15rem}
 }
 
+/* ---- palette accents ---- */
+.ctx i{background:color-mix(in srgb,var(--lav) 70%,var(--card))}
+.ctx i.m{background:var(--pink)}
+.ctx i.k{background:var(--hi)}
+.legend span:first-child .sw{background:color-mix(in srgb,var(--lav) 70%,var(--card))!important}
+.blob.sun{background:radial-gradient(circle at 35% 35%,var(--hi),color-mix(in srgb,var(--hi) 55%,var(--pink)))}
+.blob.flower{background:var(--lav)}
+.ticker{background:linear-gradient(90deg,var(--ink),color-mix(in srgb,var(--ink) 70%,var(--lav)))}
+.ticker .track span:nth-child(4n+3){color:var(--lav)}
+.tldr{box-shadow:8px 8px 0 var(--lav),8px 8px 0 3px var(--ink)}
+.rail .tag{background:var(--lav)}
+.sec:nth-of-type(odd) .rail .tag{background:var(--pink)}
+.duo .panel:nth-child(even){background:color-mix(in srgb,var(--lav) 22%,var(--card))}
+.vsgrid .panel:nth-child(1){background:color-mix(in srgb,var(--pink) 30%,var(--card))}
+.chips span:nth-child(3n){background:var(--lav);color:var(--ink)}
+.domains>div:not(.maths){background:color-mix(in srgb,var(--lav) 25%,var(--card))}
+.factors div{background:color-mix(in srgb,var(--lav) 18%,var(--card))}
+.factors .glam{background:var(--pink)}
+.factors .spot{background:var(--hi)}
+.pred{box-shadow:5px 5px 0 var(--lav)}
+.pred:nth-child(2){box-shadow:5px 5px 0 var(--pink)}
+.pred:nth-child(3){box-shadow:5px 5px 0 var(--hi)}
+.bar{background:linear-gradient(90deg,var(--lav),var(--pink),var(--hi))}
+.mind:not(.now){background:color-mix(in srgb,var(--lav) 28%,var(--card))}
+.threshold{box-shadow:8px 8px 0 var(--lav),8px 8px 0 2px var(--ink)}
+.threshold::after{color:var(--margin);opacity:.35}
+.st::before{background:var(--lav)}
+.st:nth-child(odd)::before{background:var(--hi)}
+.ledger .row.hold{background:color-mix(in srgb,var(--hi) 40%,var(--card))}
+.ledger .row{background:var(--card)}
+details.more summary::before{background:var(--lav)}
+.progress span{background:linear-gradient(90deg,var(--lav),var(--margin),var(--hi))}
+
 @media (prefers-reduced-motion:no-preference){
   .ctx i.k{animation:blink 3.2s ease-in-out infinite}
   .ctx i.k:nth-child(3n){animation-delay:1.1s}
@@ -374,7 +416,7 @@ ul.crosses li::before{content:"✕";font-weight:700;color:var(--ink);background:
           <span class="label">AI’s context window</span>
           <div class="ctx" id="ctx" aria-hidden="true"></div>
           <div class="legend">
-            <span><i class="sw" style="background:color-mix(in srgb,var(--ink) 55%,var(--pink))"></i>notes</span>
+            <span><i class="sw" style="background:color-mix(in srgb,var(--lav) 70%,var(--card))"></i>notes</span>
             <span><i class="sw" style="background:var(--hi)"></i>rules to remember</span>
             <span><i class="sw" style="background:var(--pink)"></i>dead ends</span>
           </div>
