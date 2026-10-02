@@ -1,0 +1,261 @@
+<title>AI, Society &amp; Bioethics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600;6..72,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: a single reading column styled like a clinical case file — tabbed section labels, a thesis diagram, then findings. */
+  :root {
+    --paper: #eef1f4;
+    --card: #ffffff;
+    --ink: #17202b;
+    --muted: #5a6573;
+    --rule: #cfd6de;
+    --accent: #1f5d8c;      /* clinical blue: structure, IR 1.0 */
+    --accent-soft: #dbe7f1;
+    --risk: #b4442f;        /* risks, IR 4.0 reach */
+    --risk-soft: #f5e1dc;
+    --good: #2f7a5c;
+    --good-soft: #dcefe6;
+    --f-display: "Newsreader", Georgia, "Times New Roman", serif;
+    --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #11161c; --card: #19212a; --ink: #e6ebf0; --muted: #9aa6b3; --rule: #2c3743;
+      --accent: #7fb3dc; --accent-soft: #1d3346; --risk: #e8846f; --risk-soft: #3a221d;
+      --good: #6cc39d; --good-soft: #17322a; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #11161c; --card: #19212a; --ink: #e6ebf0; --muted: #9aa6b3; --rule: #2c3743;
+    --accent: #7fb3dc; --accent-soft: #1d3346; --risk: #e8846f; --risk-soft: #3a221d;
+    --good: #6cc39d; --good-soft: #17322a; color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--f-body); font-size: 1rem; line-height: 1.6;
+    padding-inline: 16px; padding-block: 40px 64px;
+  }
+  .wrap { max-width: 960px; margin-inline: auto; display: flex; flex-direction: column; gap: 56px; }
+  h1, h2, h3 { font-family: var(--f-display); font-weight: 600; line-height: 1.15; text-wrap: balance; margin: 0; }
+  p { margin: 0; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .tab {
+    font-family: var(--f-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--muted); display: flex; align-items: center; gap: 10px;
+  }
+  .tab::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+  section { display: flex; flex-direction: column; gap: 20px; }
+  section > h2 { font-size: clamp(1.5rem, 3.4vw, 2rem); }
+  .lede { color: var(--muted); max-width: 62ch; }
+
+  /* Hero */
+  .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
+  .hero > * { min-width: 0; }
+  .cite { font-family: var(--f-mono); font-size: .78rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 14px; }
+  .cite span { white-space: nowrap; }
+  .hero h1 { font-size: clamp(2.1rem, 5.4vw, 3.4rem); margin-block: 14px 18px; letter-spacing: -.01em; }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero .lede { font-size: 1.08rem; }
+  .rings { width: 100%; max-width: 380px; margin-inline: auto; display: block; }
+  .rings text { font-family: var(--f-body); }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: .82rem; color: var(--muted); justify-content: center; margin-top: 10px; }
+  .legend i { display: inline-block; width: 22px; height: 0; border-top: 2px dashed var(--accent); vertical-align: middle; margin-right: 6px; }
+  .legend i.r { border-top: 3px solid var(--risk); }
+
+  /* Timeline */
+  .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 2px solid var(--ink); }
+  .era { padding: 16px 16px 4px 0; display: flex; flex-direction: column; gap: 6px; position: relative; min-width: 0; }
+  .era::before { content: ""; position: absolute; top: -7px; left: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); }
+  .era .num { font-family: var(--f-mono); font-size: .8rem; color: var(--muted); }
+  .era h3 { font-size: 1.2rem; }
+  .era p { font-size: .9rem; color: var(--muted); }
+  .era.now::before { background: var(--risk); border-color: var(--risk); }
+  .era.now .num { color: var(--risk); }
+  .era.ctx h3 { color: var(--muted); font-weight: 400; }
+  .note { font-size: .78rem; color: var(--muted); font-family: var(--f-mono); }
+
+  .contrast { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .contrast > div { padding: 20px; border-radius: 6px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .contrast .then { background: var(--accent-soft); }
+  .contrast .now { background: var(--risk-soft); }
+  .contrast .k { font-family: var(--f-mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
+  .contrast .then .k { color: var(--accent); }
+  .contrast .now .k { color: var(--risk); }
+  .contrast p { font-family: var(--f-display); font-size: 1.2rem; line-height: 1.35; }
+
+  /* Ledger */
+  .ledger { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; }
+  .ledger > * { min-width: 0; }
+  .col-h { font-family: var(--f-mono); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 2px solid currentColor; }
+  .promise .col-h { color: var(--good); }
+  .risks .col-h { color: var(--risk); }
+  .promise-card { margin-top: 14px; background: var(--good-soft); border-radius: 6px; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .promise-card h3 { font-size: 1.25rem; }
+  .promise-card p { font-size: .95rem; }
+  .risk-grid { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .risk { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 16px; display: grid; grid-template-columns: 40px 1fr; gap: 4px 14px; align-items: start; }
+  .risk svg { grid-row: span 2; width: 40px; height: 40px; }
+  .risk h3 { font-size: 1.1rem; }
+  .risk p { font-size: .88rem; color: var(--muted); }
+
+  /* Principle */
+  .principle { display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: 28px; }
+  .principle > * { min-width: 0; }
+  .seal { width: 120px; height: 120px; }
+  .principle h3 { font-size: 1.7rem; margin-bottom: 8px; }
+  .principle .def { font-family: var(--f-display); font-size: 1.15rem; line-height: 1.45; max-width: 52ch; }
+  .scope { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .scope span { font-family: var(--f-mono); font-size: .75rem; padding: 4px 10px; border: 1px solid var(--accent); color: var(--accent); border-radius: 999px; }
+
+  .closing { border-left: 3px solid var(--ink); padding-left: 20px; }
+  .closing p { font-family: var(--f-display); font-size: clamp(1.25rem, 2.6vw, 1.6rem); line-height: 1.35; max-width: 40ch; }
+
+  footer { font-size: .82rem; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 16px; display: flex; flex-direction: column; gap: 6px; }
+
+  @media (max-width: 760px) {
+    .hero, .ledger, .contrast { grid-template-columns: 1fr; }
+    .timeline { grid-template-columns: 1fr 1fr; row-gap: 20px; border-top: 0; }
+    .era { border-top: 2px solid var(--ink); }
+    .risk-grid { grid-template-columns: 1fr; }
+    .principle { grid-template-columns: 1fr; justify-items: start; padding: 20px; }
+    .seal { width: 88px; height: 88px; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .reach { stroke-dasharray: 600; stroke-dashoffset: 0; animation: draw 1.6s ease-out both; }
+    @keyframes draw { from { stroke-dashoffset: 600; } to { stroke-dashoffset: 0; } }
+  }
+</style>
+
+<main class="wrap">
+
+  <header class="hero">
+    <div>
+      <div class="cite">
+        <span>Tzu Chi Med J · 2020</span><span>32(4): 339–343</span><span>PMC7605294</span>
+      </div>
+      <h1>AI changes what we do, how we relate, and <em>who we think we are</em></h1>
+      <p class="lede">Michael Cheng-Tek Tai's review treats artificial intelligence as the Fourth Industrial Revolution (IR 4.0). It looks at what AI is, how it is reshaping industry, society and the economy, and why it needs its own set of bioethical principles.</p>
+    </div>
+    <figure style="margin:0">
+      <svg class="rings" viewBox="0 0 320 320" role="img" aria-label="Three concentric rings. Outer ring: how we do things. Middle: how we relate to others. Core: what we know about ourselves. The dashed IR 1.0 boundary touches only the outer ring. The solid IR 4.0 line reaches the core.">
+        <circle cx="160" cy="160" r="150" fill="var(--accent-soft)" stroke="var(--rule)"/>
+        <circle cx="160" cy="160" r="100" fill="var(--card)" stroke="var(--rule)"/>
+        <circle cx="160" cy="160" r="50" fill="var(--risk-soft)" stroke="var(--rule)"/>
+        <text x="160" y="38" text-anchor="middle" font-size="12" fill="var(--ink)" font-weight="600">How we do things</text>
+        <text x="160" y="88" text-anchor="middle" font-size="12" fill="var(--ink)" font-weight="600">How we relate</text>
+        <text x="160" y="156" text-anchor="middle" font-size="12" fill="var(--ink)" font-weight="600">What we know</text>
+        <text x="160" y="172" text-anchor="middle" font-size="12" fill="var(--ink)" font-weight="600">about ourselves</text>
+        <circle cx="160" cy="160" r="125" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6 5"/>
+        <text x="160" y="300" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--accent)">IR 1.0 stops here</text>
+        <path class="reach" d="M 300 300 L 214 214 L 178 178" fill="none" stroke="var(--risk)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="178" cy="178" r="5" fill="var(--risk)"/>
+        <text x="296" y="286" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--risk)">IR 4.0</text>
+      </svg>
+      <figcaption class="legend"><span><i></i>Reach of IR 1.0</span><span><i class="r"></i>Reach of AI (IR 4.0)</span></figcaption>
+    </figure>
+  </header>
+
+  <section>
+    <div class="tab">01 · Four industrial revolutions</div>
+    <h2>Earlier revolutions changed work. This one changes relationships.</h2>
+    <div class="timeline">
+      <div class="era">
+        <span class="num">IR 1.0 · 18th c.</span>
+        <h3>Mechanisation</h3>
+        <p>Caused huge social change without directly complicating human relationships.</p>
+      </div>
+      <div class="era ctx">
+        <span class="num">IR 2.0</span>
+        <h3>Electricity &amp; mass production</h3>
+      </div>
+      <div class="era ctx">
+        <span class="num">IR 3.0</span>
+        <h3>Computers &amp; automation</h3>
+      </div>
+      <div class="era now">
+        <span class="num">IR 4.0 · today</span>
+        <h3>Artificial intelligence</h3>
+        <p>Changes how we do things and also how we relate to one another.</p>
+      </div>
+    </div>
+    <p class="note">IR 2.0 and 3.0 are shown for context. The paper's comparison is between IR 1.0 and AI.</p>
+    <div class="contrast">
+      <div class="then"><span class="k">Then</span><p>Machines changed how people worked and lived.</p></div>
+      <div class="now"><span class="k">Now</span><p>Machines that learn change how people treat each other and understand themselves.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="tab">02 · The ledger</div>
+    <h2>One large promise, four social risks</h2>
+    <p class="lede">The paper weighs AI's positive effects in the health sector against the harm it can do to society.</p>
+    <div class="ledger">
+      <div class="promise">
+        <div class="col-h"><span>Promise</span><span>+</span></div>
+        <div class="promise-card">
+          <h3>Better healthcare</h3>
+          <p>The paper names healthcare as the area with the clearest positive impact. Used well, AI can support medical work and benefit patients.</p>
+        </div>
+      </div>
+      <div class="risks">
+        <div class="col-h"><span>Risks</span><span>4</span></div>
+        <div class="risk-grid">
+          <div class="risk">
+            <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="14" width="28" height="18" rx="2" fill="none" stroke="var(--risk)" stroke-width="2"/><path d="M15 14v-4h10v4" fill="none" stroke="var(--risk)" stroke-width="2"/><path d="M9 34 31 10" stroke="var(--risk)" stroke-width="2"/></svg>
+            <h3>Unemployment</h3>
+            <p>The paper names AI as a main cause of job losses as machines take over human work.</p>
+          </div>
+          <div class="risk">
+            <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="10" cy="14" r="4" fill="var(--risk)"/><path d="M4 30c0-5 3-8 6-8s6 3 6 8" fill="none" stroke="var(--risk)" stroke-width="2"/><circle cx="30" cy="14" r="4" fill="var(--risk)"/><path d="M24 30c0-5 3-8 6-8s6 3 6 8" fill="none" stroke="var(--risk)" stroke-width="2"/><path d="M17 20h6" stroke="var(--risk)" stroke-width="2" stroke-dasharray="2 2"/></svg>
+            <h3>Social distance</h3>
+            <p>People interact through machines more and with each other less.</p>
+          </div>
+          <div class="risk">
+            <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="8" width="8" height="26" fill="var(--risk)"/><rect x="18" y="26" width="6" height="8" fill="none" stroke="var(--risk)" stroke-width="2"/><rect x="28" y="30" width="6" height="4" fill="none" stroke="var(--risk)" stroke-width="2"/></svg>
+            <h3>Wealth inequality</h3>
+            <p>The gains go to the people who own the technology, so the gap between rich and poor widens.</p>
+          </div>
+          <div class="risk">
+            <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="13" fill="none" stroke="var(--risk)" stroke-width="2"/><path d="M20 20 31 9" stroke="var(--risk)" stroke-width="2"/><path d="M26 8h6v6" fill="none" stroke="var(--risk)" stroke-width="2"/><circle cx="20" cy="20" r="3" fill="var(--risk)"/></svg>
+            <h3>Loss of control</h3>
+            <p>AI can develop its own algorithms beyond its human controllers, which puts vulnerable users' information at risk.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="tab">03 · Toward an AI bioethics</div>
+    <h2>New technology needs new guidelines</h2>
+    <p class="lede">Tai argues that traditional ethics cannot simply be carried over. He proposes a new set of AI bioethics principles to guide the technology so that the whole world benefits from it. The first is beneficence.</p>
+    <div class="principle">
+      <svg class="seal" viewBox="0 0 120 120" aria-hidden="true">
+        <circle cx="60" cy="60" r="56" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <circle cx="60" cy="60" r="44" fill="none" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 4"/>
+        <text x="60" y="54" text-anchor="middle" font-family="Newsreader, Georgia, serif" font-size="30" font-weight="700" fill="var(--accent)">I</text>
+        <text x="60" y="76" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="1.5" fill="var(--accent)">PRINCIPLE</text>
+      </svg>
+      <div>
+        <h3>Beneficence</h3>
+        <p class="def">Doing good. AI's purpose and functions should benefit all of human life, society and the universe, not only those who build or own it.</p>
+        <div class="scope"><span>Human life</span><span>Society</span><span>The universe</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing">
+    <p>AI is going to change the way we live. The paper's question is whether ethics can keep pace so that the change benefits everyone.</p>
+  </section>
+
+  <footer>
+    <span>Source: Tai MC-T. The impact of artificial intelligence on human society and bioethics. <i>Tzu Chi Medical Journal</i>. 2020;32(4):339–343. PMID 33163378.</span>
+    <span><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7605294/" target="_blank" rel="noopener">Read the full article on PubMed Central</a>. This infographic paraphrases and summarises the article.</span>
+  </footer>
+</main>
